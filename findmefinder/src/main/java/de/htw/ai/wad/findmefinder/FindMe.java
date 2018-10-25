@@ -1,13 +1,14 @@
 package de.htw.ai.wad.findmefinder;
 
-/**
- * Hello world!
- *
- */
-public class FindMe
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.FIELD})
+
+public @interface FindMe
 {
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
+
 }
