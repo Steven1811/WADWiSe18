@@ -1,0 +1,32 @@
+body {
+    display: grid;
+    grid-template-areas: "header header" "section main" "footer footer";
+    grid-template-rows: 80px 1fr 70px;
+    grid-template-columns: 20% 1fr;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    grid-area: header;
+    padding: 1.2em;
+    color: orange;
+    background: silver;
+}
+
+section {
+    grid-area: section;
+}
+
+main {
+    grid-area: main;
+}
+
+footer {
+    grid-area: footer;
+    padding: 1.2em;
+    color: silver;
+    background: orange;
+}
