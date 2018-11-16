@@ -2,16 +2,23 @@
 <html lang="de">
 <head><meta charset="utf-8">
     <title>AddressViz</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/map.css">
+    <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
 </head>
-<body>
+<body onload="drawmap();">
     <header>
-        Ueberschrift
+        AddressViz
     </header>
     <nav>
-        Navigation
+        <p>Login</p>
+        <p>Main</p>
     </nav>
-    <main>Inhalt</main>
+    <main>
+        <div id="map">
+    </main>
     <footer>Fusszeilen</footer>
 </body>
 </html>

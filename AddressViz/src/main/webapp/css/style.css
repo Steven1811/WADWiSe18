@@ -30,3 +30,9 @@ footer {
     color: silver;
     background: orange;
 }
+
+#map {
+    height: 86%;
+    width: 96%;
+    padding: 0; margin: 0;
+}
