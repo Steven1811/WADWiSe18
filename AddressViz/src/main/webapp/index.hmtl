@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="utf-8">
+    <title>AddressViz</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <link rel="stylesheet" type="text/css" href="css/add.css">
+    <link rel="stylesheet" type="text/css" href="css/map.css">
+    <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
+</head>
+<body onload="drawmap();">
+    <header>
+        AddressViz
+    </header>
+    <nav>
+        <p>Login</p>
+        <p>Main</p>
+    </nav>
+    <main>
+        <div id="map">
+    </main>
+
+    <div id="logindiv">
+        Username: <input type="text" name="Username" value="admin"><br>
+        Passwort: <input type="text" name="Passwort" value="password"><br>
+
+        <button id="loginbutton" type="button">Login</button> 
+    </div>
+
+    <div id="logindiv">
+        Name: <input type="text" name="Name" value=""><br>
+        Straße: <input type="text" name="Straße" value=""><br>
+        PLZ: <input type="text" name="PLZ" value=""><br>
+        Stadt: <input type="text" name="Stadt" value=""><br>
+        Land: <input type="text" name="Land" value=""><br>
+
+        Privat<input id="pivatecheckbox" type="checkbox" name="privatecheckbox" value=""><br>
+
+        <button id="addbutton" type="button">Add</button> <br>
+        <button id="updatebutton" type="button">Update</button> 
+        <button id="deletebutton" type="button">Delete</button> 
+    </div>
+
+    <footer>Fusszeilen</footer>
+</body>
+</html>
