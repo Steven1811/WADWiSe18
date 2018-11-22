@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="utf-8">
+    <title>AddressViz</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
+</head>
+<body onload="drawmap();">
+    <div class="grid-container">
+        <div id="navigation">
+            <b>Navigation</b><br>
+            <ul>
+                <li><a href="#login">Login</a></li>
+                <li><a href="#map-area">Main</a></li>
+                <li><a href="#add-address">Add Address</a></li>
+            </ul>
+        </div>
+        <div id="header">AdressViz</div>
+        <div id="login">
+            <form>
+                <table>
+                    <tr>
+                        <th>Login</th>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td><input type="text" placeholder="Enter Username" name="user" required></td>
+                    </tr>
+                    <tr>
+                            <td>Password</td>
+                            <td><input type="password" placeholder="Enter Password" name="password" required></td>
+                    </tr>
+                    <tr>
+                        <td><button type="submit">Login</button></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div id="map-buttons">
+            <table>
+                <tr>
+                    <th>Map functions</th>
+                </tr>
+                <tr>
+                    <td><button type="button">Show</button></td>
+                    <td><button type="button">Add</button></td>
+                </tr>
+            </table>
+        </div>
+        <div id="map-names">
+            <b>Addresses:</b><br>
+            <ul>
+                <li><a href="#">Anne</a></li>
+                <li><a href="#">Bob</a></li>
+                <li><a href="#">Carl</a></li>
+                <li><a href="#">Emil</a></li>
+                <li><a href="#">Fyn</a></li>
+                <li><a href="#">Gina</a></li>
+                <li><a href="#">Herta</a></li>
+            </ul>
+        </div>
+        <div id="map-area">
+            <div id="map"></div>
+        </div>
+        <div id="add-address">
+            <form>
+                <table>
+                    <tr>
+                        <th>Add Address</th>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td><input type="text" name="name" required></td>
+                    </tr>
+                    <tr>
+                        <td>Street</td>
+                        <td><input type="text" name="street" required></td>
+                    </tr>
+                    <tr>
+                        <td>Post Code</td>
+                        <td><input type="text" name="postcode" required></td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td><input type="text" name="city" required></td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td><input type="text" name="country" required></td>
+                    </tr>
+                    <tr>
+                        <td>Private</td>
+                        <td><input type="checkbox" name="private" value="true"></td>
+                    </tr>
+                    <tr>
+                        <td><button type="submit">Add</button></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div id="update-address">
+                <form>
+                    <table>
+                        <tr>
+                            <th>Update Address</th>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" name="name" required></td>
+                        </tr>
+                        <tr>
+                            <td>Street</td>
+                            <td><input type="text" name="street" required></td>
+                        </tr>
+                        <tr>
+                            <td>Post Code</td>
+                            <td><input type="text" name="postcode" required></td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td><input type="text" name="city" required></td>
+                        </tr>
+                        <tr>
+                            <td>Country</td>
+                            <td><input type="text" name="country" required></td>
+                        </tr>
+                        <tr>
+                            <td>Private</td>
+                            <td><input type="checkbox" name="private" value="true"></td>
+                        </tr>
+                        <tr>
+                            <td><button type="submit">Update</button></td>
+                            <td><button type="submit">Delete</button></td>
+                        </tr>
+                    </table>
+                </form>
+        </div>
+        <div id="footer">Webentwicklung HTW Berlin</div>
+    </div>
+</body>
+</html>
