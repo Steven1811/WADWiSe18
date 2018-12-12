@@ -15,29 +15,16 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.0.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 
     <properties>
         <main.basedir>${project.basedir}</main.basedir>
-
-		<!-- Analysis Tools for CI -->
-		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
     </properties>
 	
 	<modules>
         <module>frontend</module>
         <module>backend</module>
     </modules>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eluder.coveralls</groupId>
-				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>${build-plugin.coveralls.version}</version>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

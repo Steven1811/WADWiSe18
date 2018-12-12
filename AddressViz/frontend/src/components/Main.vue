@@ -47,7 +47,6 @@
                 </v-dialog>
             </v-card>
         </v-flex>
-        <v-progress-linear :indeterminate="true" v-if="!mapLoaded"></v-progress-linear>
         <v-layout row fill-height>
             <v-flex d-flex xs3 sm3 md2>
                 <v-navigation-drawer permanent clipped>
@@ -124,55 +123,37 @@
     export default {
         
         mounted () {
-            // Script Loader
-            let openLayersScript = document.createElement("script")
-            let openStreetMapScript = document.createElement("script")
-            
-            openStreetMapScript.async = false
-            openLayersScript.async = false
+            //let popuptext="<font color=\"black\"><b>Alexanderplatz Berlin</b></font>";
+            //Initialize Map Viewport
+            window.OpenLayers.Lang.setCode('de');
 
-            openStreetMapScript.setAttribute("src", "http://www.openstreetmap.org/openlayers/OpenStreetMap.js")
-            openLayersScript.setAttribute("src", "http://www.openlayers.org/api/OpenLayers.js")
+            let lon = 13.413215;
+            let lat = 52.521918;
+            let zoom = 15;
 
-            document.head.appendChild(openLayersScript)
-            document.head.appendChild(openStreetMapScript)
+            this.map = new window.OpenLayers.Map('map', {
+                projection: new window.OpenLayers.Projection("EPSG:900913"),
+                displayProjection: new window.OpenLayers.Projection("EPSG:4326"),
+                controls: [
+                    new window.OpenLayers.Control.Navigation(),
+                    new window.OpenLayers.Control.LayerSwitcher(),
+                    new window.OpenLayers.Control.PanZoomBar()],
+                maxExtent:
+                    new window.OpenLayers.Bounds(-20037508.34,-20037508.34,
+                                            20037508.34, 20037508.34),
+                numZoomLevels: 18,
+                maxResolution: 156543,
+                units: 'meters'
+            });
 
-            //Sloppy but I haven't found another way to wait for the scripts to be completely loaded by the Browser
-            setTimeout(() => {
-                console.log("Creating Map...")
-                //let popuptext="<font color=\"black\"><b>Alexanderplatz Berlin</b></font>";
+            this.layer_mapnik = new window.OpenLayers.Layer.OSM.Mapnik("Mapnik");
+            this.layer_markers = new window.OpenLayers.Layer.Markers("Address", { projection: new window.OpenLayers.Projection("EPSG:4326"),
+                visibility: true, displayInLayerSwitcher: false });
 
-                OpenLayers.Lang.setCode('de');
+            this.map.addLayers([this.layer_mapnik, this.layer_markers]);
+            this.jumpTo(lon, lat, zoom);
 
-                let lon = 13.413215;
-                let lat = 52.521918;
-                let zoom = 15;
-
-                this.map = new OpenLayers.Map('map', {
-                    projection: new OpenLayers.Projection("EPSG:900913"),
-                    displayProjection: new OpenLayers.Projection("EPSG:4326"),
-                    controls: [
-                        new OpenLayers.Control.Navigation(),
-                        new OpenLayers.Control.LayerSwitcher(),
-                        new OpenLayers.Control.PanZoomBar()],
-                    maxExtent:
-                        new OpenLayers.Bounds(-20037508.34,-20037508.34,
-                                                20037508.34, 20037508.34),
-                    numZoomLevels: 18,
-                    maxResolution: 156543,
-                    units: 'meters'
-                });
-
-                this.layer_mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
-                this.layer_markers = new OpenLayers.Layer.Markers("Address", { projection: new OpenLayers.Projection("EPSG:4326"),
-                    visibility: true, displayInLayerSwitcher: false });
-
-                this.map.addLayers([this.layer_mapnik, this.layer_markers]);
-                this.jumpTo(lon, lat, zoom);
-                this.mapLoaded = true
-                //this.addMarker(this.layer_markers, 13.413215, 52.521918, popuptext);
-
-            }, 2000);
+            //this.addMarker(this.layer_markers, 13.413215, 52.521918, popuptext);
         },
         data: () => ({
             contacts: [
@@ -180,7 +161,6 @@
                 { name: "Lincoln M.", address: "Buchholzer Str. 10", postcode: "10437", city: "Berlin", country: "Germany", private: false}
             ],
             map: '',
-            mapLoaded: false,
             layer_mapnik: '',
             layer_tah: '',
             layer_markers: '',
@@ -193,7 +173,7 @@
             jumpTo(lon, lat, zoom) {
                 let x = this.Lon2Merc(lon);
                 let y = this.Lat2Merc(lat);
-                this.map.setCenter(new OpenLayers.LonLat(x, y), zoom);
+                this.map.setCenter(new window.OpenLayers.LonLat(x, y), zoom);
                 return false;
             },
             Lon2Merc(lon) {
@@ -206,14 +186,14 @@
             },
             addMarker(layer, lon, lat, popupContentHTML) {
 
-                let ll = new OpenLayers.LonLat(this.Lon2Merc(lon), this.Lat2Merc(lat));
-                let feature = new OpenLayers.Feature(layer, ll);
+                let ll = new window.OpenLayers.LonLat(this.Lon2Merc(lon), this.Lat2Merc(lat));
+                let feature = new window.OpenLayers.Feature(layer, ll);
                 feature.closeBox = true;
-                feature.popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {minSize: new OpenLayers.Size(300, 180) } );
+                feature.popupClass = window.OpenLayers.Class(window.OpenLayers.Popup.FramedCloud, {minSize: new window.OpenLayers.Size(300, 180) } );
                 feature.data.popupContentHTML = popupContentHTML;
                 feature.data.overflow = "hidden";
 
-                let marker = new OpenLayers.Marker(ll);
+                let marker = new window.OpenLayers.Marker(ll);
                 marker.feature = feature;
 
                 let markerClick = function(evt) {
@@ -224,7 +204,7 @@
                     } else {
                         this.popup.toggle();
                     }
-                    OpenLayers.Event.stop(evt);
+                    window.OpenLayers.Event.stop(evt);
                 };
                 marker.events.register("mousedown", feature, markerClick);
 
@@ -261,9 +241,6 @@
                 .catch((error) => {
                     this.errorText = error
                 })
-            },
-            addContact(contact) {
-
             }
         }
     }
