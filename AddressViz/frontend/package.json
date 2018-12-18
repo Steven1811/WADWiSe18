@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "tomcat-deploy redeploy ./target/dist/advi.war --hostname localhost --port 8080 --login admin --password 1234 --path /advi", 
+    "deploy": "tomcat-deploy redeploy ./target/dist/advi.war --hostname localhost --port 8080 --login admin --password 1234 --path /advi",
     "buildDeploy": "vue-cli-service build && tomcat-deploy redeploy ./target/dist/advi.war --hostname localhost --port 8080 --login admin --password 1234 --path /advi"
   },
   "dependencies": {
