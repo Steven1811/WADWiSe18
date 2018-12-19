@@ -2,8 +2,8 @@
   <v-container fluid grid-list-md fill-height>
     <v-layout column >
         <v-flex d-flex xs1 sm1 md1>
-            <!-- EditContact Dialog !-->
             <v-card color="indigo">
+                <!-- EditContact Dialog !-->
                 <v-dialog v-model="editContactDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
                     <v-card>
                         <v-toolbar dark color="primary">
@@ -17,56 +17,53 @@
                                 <v-form>
                                     <v-text-field
                                         label="Full name"
-                                        v-model="contactDialogData.name"
+                                        v-model="editContactDialogData.name"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Address"
-                                        v-model="contactDialogData.address"
+                                        v-model="editContactDialogData.address"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Postcode"
-                                        v-model="contactDialogData.postcode"
+                                        v-model="editContactDialogData.postcode"
                                     ></v-text-field>
                                     <v-text-field
                                         label="City"
-                                        v-model="contactDialogData.city"
+                                        v-model="editContactDialogData.city"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Country"
-                                        v-model="contactDialogData.country"
+                                        v-model="editContactDialogData.country"
                                     ></v-text-field>
                                     <v-checkbox
                                         label="Private"
-                                        v-model="contactDialogData.private"
+                                        v-model="editContactDialogData.private"
                                     ></v-checkbox>
                                     <v-divider></v-divider>
                                     <v-text-field 
                                         label="Longitude"
-                                        v-model="contactDialogData.longitude"
+                                        v-model="editContactDialogData.longitude"
                                         disabled
                                     ></v-text-field>
                                     <v-text-field 
                                         label="Latitude"
-                                        v-model="contactDialogData.latitude"
+                                        v-model="editContactDialogData.latitude"
                                         disabled
                                     ></v-text-field>
                                     <v-divider></v-divider>
-                                    <v-btn @click="updateContact(contactDialogData)">Update</v-btn>
-                                    <v-btn @click="deleteContact(contactDialogData)">Delete</v-btn>
+                                    <v-btn @click="updateContact(editContactDialogData)">Update</v-btn>
+                                    <v-btn @click="deleteContact(editContactDialogData)">Delete</v-btn>
                                 </v-form>
                             </v-flex>
                         </v-card-text>
                     </v-card>
                 </v-dialog>
-            </v-card>
-
-            <!-- AddContact Dialog !-->
-            <v-card color="indigo">
+                <!-- AddContact Dialog !-->
                 <v-dialog v-model="addContactDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
                     <v-btn slot="activator" color="orange">Add</v-btn>
                     <v-card>
                         <v-toolbar dark color="primary">
-                            <v-btn icon dark @click="addContactDialog = false; addContactData = {}">
+                            <v-btn icon dark @click="addContactDialog = false; addContactDialogData = {}">
                                 <v-icon>close</v-icon>
                             </v-btn>
                             <v-toolbar-title>Add Contact</v-toolbar-title>
@@ -76,29 +73,29 @@
                                 <v-form>
                                     <v-text-field
                                         label="Full name"
-                                        v-model="addContactData.name"
+                                        v-model="addContactDialogData.name"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Address"
-                                        v-model="addContactData.address"
+                                        v-model="addContactDialogData.address"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Postcode"
-                                        v-model="addContactData.postcode"
+                                        v-model="addContactDialogData.postcode"
                                     ></v-text-field>
                                     <v-text-field
                                         label="City"
-                                        v-model="addContactData.city"
+                                        v-model="addContactDialogData.city"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Country"
-                                        v-model="addContactData.country"
+                                        v-model="addContactDialogData.country"
                                     ></v-text-field>
                                     <v-checkbox
                                         label="Private"
-                                        v-model="addContactData.private"
+                                        v-model="addContactDialogData.private"
                                     ></v-checkbox>
-                                    <v-btn @click="addContact(addContactData)">Save</v-btn>
+                                    <v-btn @click="addContact(addContactDialogData)">Save</v-btn>
                                 </v-form>
                             </v-flex>
                         </v-card-text>
@@ -124,8 +121,8 @@
 
                     <v-list dense class="pt-0">
                         <v-list-tile
-                            v-for="contact in contacts"
-                            :key="contact.title"
+                            v-for="(contact) in contacts"
+                            :key="contact.id"
                             @click="showEditContactDialog(contact)"
                         >
                             <v-list-tile-action>
@@ -178,7 +175,9 @@
 </template>
 
 <script>
-  import axios from 'axios';
+    import axios from 'axios';
+    import { mapState, mapMutations } from 'vuex'
+
     export default {
         
         mounted () {
@@ -214,12 +213,16 @@
 
             //Add Coordinates to map
             this.updateLocationMarkers()
+
+            //Add some sample data if started for the first time to prevent id inconsistencies
+            if(!this.firstStart) {
+                this.addNewContact({name: "Steven B.", address: "Rosa-luxemburg-Strasse 17", postcode: "10178", city: "Berlin", country: "Germany", private: false, longitude: '', latitude: ''})
+                this.addNewContact({name: "Lincoln M.", address: "Buchholzer Str. 10", postcode: "10437", city: "Berlin", country: "Germany", private: false, longitude: '', latitude: ''})
+                this.addNewContact({name: "Max M.", address: "Saarstraße 10", postcode: "12161", city: "Berlin", country: "Germany", private: false, longitude: '', latitude: ''})
+                this.setFirstStartState(true) 
+            }
         },
         data: () => ({
-            contacts: [
-                { id: 1, name: "Steven B.", address: "Rosa-luxemburg-Strasse 17", postcode: "10178", city: "Berlin", country: "Germany", private: false, longitude: '', latitude: ''},
-                { id: 2, name: "Lincoln M.", address: "Buchholzer Str. 10", postcode: "10437", city: "Berlin", country: "Germany", private: false, longitude: '', latitude: ''}
-            ],
             map: '',
             layer_mapnik: '',
             layer_tah: '',
@@ -227,17 +230,30 @@
             errorDialog: false,
             errorText: '',
             editContactDialog: false,
+            editContactDialogData: {},
             addContactDialog: false,
-            contactDialogData: {},
-            addContactData: {}
+            addContactDialogData: {}
         }),
+        computed: {
+            ...mapState([
+                'contacts',
+                'firstStart'
+            ])
+        },
         methods: {
+        ...mapMutations([
+            'addNewContact',
+            'deleteContactById',
+            'updateContactById',
+            'setFirstStartState'
+        ]),
+
             addContactToMap(contact) {
                 this.addMarker(
                     this.layer_markers,
                     contact.longitude,
                     contact.latitude, 
-                    `<font color=\"black\"><b>${contact.name}<br>${contact.address}<br>${contact.postcode}<br>${contact.city}<br>${contact.country}</b></font>`,
+                    `<font color="black"><b>${contact.name}<br>${contact.address}<br>${contact.postcode}<br>${contact.city}<br>${contact.country}</b></font>`,
                     false
                 )
             },
@@ -320,42 +336,19 @@
                 }
             },
             showEditContactDialog(contact) {
-                axios.get(`https://nominatim.openstreetmap.org/search?format=json&street=${contact.address}&city=${contact.city}&country=${contact.country}&postalcode=${contact.postalcode}`)
-                .then((response) => {
-                    console.log(response.data)
-                    let longitude = parseFloat(response.data[0].lon)
-                    let latitude = parseFloat(response.data[0].lat)
-                    this.contactDialogData = JSON.parse(JSON.stringify(contact)) //Duplicate vue Data
-                    this.contactDialogData.ref = contact //Save reference to original contact
-                    this.editContactDialog = true
-                })
-                .catch((error) => {
-                    console.log(error)
-                    this.errorText = error
-                    this.errorDialog = true
-                })
+                this.editContactDialogData = JSON.parse(JSON.stringify(contact))
+                this.editContactDialog = true
             },
             showErrorDialog(error) {
-                console.log(error)
+                console.log(error.message)
                 this.errorText = error
                 this.errorDialog = true
             },
             updateContact(contact) {
-                contact.ref.name = contact.name
-                contact.ref.address = contact.address
-                contact.ref.city = contact.city
-                contact.ref.postcode = contact.postcode
-                contact.ref.private = contact.private
-                contact.ref.country = contact.country
-                this.editContactDialog = false
-
-                //Update Coordinates
-                this.getContactGeoLocation(contact.ref)
-                .then((location) => {
-                    contact.ref.longitude = location.lon
-                    contact.ref.latitude = location.lat
-                    this.clearLocationMarkers()
-                    this.updateLocationMarkers()
+                this.updateContactById({id: contact.id, data: this.editContactDialogData})
+                this.updateLocationMarkers()
+                .then(() => {
+                    this.editContactDialog = false
                 })
                 .catch((error) => {
                     this.showErrorDialog(error)
@@ -363,6 +356,7 @@
             },
             updateLocationMarkers() {
                 return new Promise((resolve, reject) => {
+                    this.layer_markers.clearMarkers()
                     this.contacts.forEach((contact) => {
                         this.getContactGeoLocation(contact)
                         .then((location) => {
@@ -372,33 +366,23 @@
                             resolve()
                         })
                         .catch((error) => {
-                            this.showErrorDialog(error)
+                            reject(error)
                         })}
                     )
                 })
             },
-            clearLocationMarkers() {
-                this.layer_markers.clearMarkers()
-            },
             deleteContact(contact) {
-                this.contacts = this.contacts.filter((item) => {
-                    if(item.id !== contact.id) {
-                        console.log(item.name)
-                        return item
-                    }
-                })
-                this.$delete(this.contacts, contact.id)
-                this.clearLocationMarkers()
+                this.deleteContactById(contact.id)
                 this.updateLocationMarkers().then(() => {
                     this.editContactDialog = false
                 })
                 
             },
             addContact(contact) {
-                this.contacts.push(contact)
-                this.clearLocationMarkers()
+                this.addNewContact(contact)
                 this.updateLocationMarkers().then(() => {
                     this.addContactDialog = false
+                    this.addContactDialogData = {}
                 })
                 
             }
