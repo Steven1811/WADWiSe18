@@ -211,8 +211,6 @@
             this.map.addLayers([this.layer_mapnik, this.layer_markers]);
             this.jumpTo(lon, lat, zoom);
 
-            //Add Coordinates to map
-            this.updateLocationMarkers()
 
             //Add some sample data if started for the first time to prevent id inconsistencies
             if(!this.firstStart) {
@@ -221,6 +219,9 @@
                 this.addNewContact({name: "Max M.", address: "Saarstraße 10", postcode: "12161", city: "Berlin", country: "Germany", private: false, longitude: '', latitude: ''})
                 this.setFirstStartState(true) 
             }
+
+            //Add Coordinates to map
+            this.updateLocationMarkers()
         },
         data: () => ({
             map: '',
@@ -233,6 +234,8 @@
             editContactDialogData: {},
             addContactDialog: false,
             addContactDialogData: {}
+
+            
         }),
         computed: {
             ...mapState([
@@ -383,6 +386,10 @@
                 this.updateLocationMarkers().then(() => {
                     this.addContactDialog = false
                     this.addContactDialogData = {}
+                })
+                .catch((error) => {
+                    this.showErrorDialog("Address not found")
+                    this.deleteContact(contact)
                 })
                 
             }
