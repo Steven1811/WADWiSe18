@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    password: 12345678
+    url: jdbc:mysql://localhost:3306/advi?serverTimezone=UTC&useSSL=false
+    username: advi
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  queries:
+    users-query: select userid, password from user where userid=?
